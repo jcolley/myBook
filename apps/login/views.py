@@ -21,7 +21,7 @@ def register(request):
         for error in results['errors']:
             messages.error(request, error)
             return redirect('login:index')
-
+    request.session['id'] = results['user'].id
     return redirect('mybook:index')
 
 

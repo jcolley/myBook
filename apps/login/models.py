@@ -29,14 +29,11 @@ class UserManager(models.Manager):
             results['errors'].append("Passwords do not match")
             results['status'] = False
 
-        # if datetime.now().date() - datetime.strptime(postData(['dob']), '%Y') < 13:
-        #     print 'datetime.now().date(%Y) - Age Method Worked!'
-        #     results['errors'].append("datetime.now().date(%Y) - Must be at least 13")
+        # dob = datetime.strptime(postData['dob'], '%Y-%m-%d').date()
+
+        # if dob - datetime.strptime(datetime.now().date(), '%Y-%m-%d') < 13:
         #     results['status'] = False
-        # if datetime.strptime(postData(['dob']), '%Y-%m-%d') < datetime.timedelta(days=13*365):
-        #     print 'datetime.timedelta - Age Method Worked!'
-        #     results['errors'].append("datetime.timedelta - Must be at least 13")
-        #     results['status'] = False
+        #     results['errors'].append('Must be 13 or older')
 
         if results['status'] is False:
             return results
