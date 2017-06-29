@@ -16,7 +16,6 @@ def index(request):
 
 def register(request):
     results = User.objects.registervalidate(request.POST)
-    print "***UserResult, back in views ***", results['status']
     if not results['status']:
         for error in results['errors']:
             messages.error(request, error)

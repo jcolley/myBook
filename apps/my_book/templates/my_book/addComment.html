@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Add Comment</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div id="blogdata">
+        <h1>{{blogid.title}}</h1>
+        <p>Created: {{blogid.created_at}} by {{blogid.user_id.username}}</p><br>
+        <p>{{blogid.content}}</p>
+    </div> 
+    <hr>
+    <div id="leaveyourcomment">
+        <h4>Leave your comment here</h4>
+        <form action="{% url 'mybook:addComment' %}" method="POST">
+            {% csrf_token %}
+            <textarea name="content" rows="5" cols="50" autofocus></textarea><br>
+            <input type="hidden" name="user_id" value="{{blogid.user_id}}">
+            <input type="hidden" name="blog_id" value="{{blogid.id}}">
+            <button type="submit" name="submit" value="submit">Add comment</button>
+        </form>    
+    </div>
+    </body>
+</html>
