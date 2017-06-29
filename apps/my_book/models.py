@@ -29,18 +29,25 @@ class BlogManager(models.Manager):
 
     def addLike(self, postData, user_id):
         results = {'status': True, 'errors': []}
-        try:
-            print 'mskjsdkjskdksjksdjksdjksjksdjskjdkjsdkj'
-            blog = Blog.objects.get(postData['blog_id'])
-            user = User.objects.get(id=user_id)
-            like = Blog.likedBlogs.add(user)
-            blog.save()
-        except:
-            results['errors'].append('Error: not liked')
-
+        user = User.objects.get(id=user_id)
+        blog = Blog.objects.get(id=postData['blog_id'])
+        if user:
+            try:
+                like = blog.likes.add(user)
+                blog.save()
+            except:
+                results['errors'].append('Error: Like not created')
         return results
 
-
+class CommentManager(models.Manager):
+    def addComment(self, postData, user):
+        results = {'status': True, 'errors': []}
+        print "model", "*"*200, postData, "*"*200
+        Comment.objects.create(blog_id=postData['blog_id'],
+                                user_id=user,
+                                comment=postData['content'])
+        return results
+        
 class Blog(models.Model):
     title = models.CharField(max_length=100)
     content = models.CharField(max_length=5000)
@@ -50,3 +57,12 @@ class Blog(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     objects = BlogManager()
+
+class Comment(models.Model):
+    blog = models.ForeignKey('Blog', related_name='comments')
+    user = models.ForeignKey('login.User', related_name='usercomments')
+    comment = models.CharField(max_length=1000)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    objects = CommentManager()
